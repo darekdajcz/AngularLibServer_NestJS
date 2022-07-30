@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ProductService } from './product-service';
+import { CreateProductDto } from './dtos/create-product.dto';
 
 
 // localhost:3000/products
@@ -13,4 +14,15 @@ export class ProductsController {
   getProducts(): any {
     return this.productService.getAll();
   }
+
+  @Get('/:id')
+  getProduct(@Param('id') id: string): any {
+    return this.productService.getById(parseInt(id));
+  }
+
+  @Post()
+  addProduct(@Body() requestBody: CreateProductDto) {
+    return this.productService.add(requestBody.title, requestBody.price);
+  }
+
 }
