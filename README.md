@@ -44,6 +44,12 @@ $ npm run test:cov
 ```bash
 # plugins
 for db.sqlite install sqlite viewer plugin
+```
+
+## Connecting with database
+```bash
+#in terminal
+mysql -u darek-user -p
 
 ```
 
