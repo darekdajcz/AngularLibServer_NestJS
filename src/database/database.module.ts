@@ -13,7 +13,8 @@ import { User } from './entity/user.entity';
       password: 'uzi2115',
       database: 'angular_db',
       entities: [User, Customer],
-      synchronize: true
-    })]
+      synchronize: true,
+    }),
+  ],
 })
 export class AppModule {}
