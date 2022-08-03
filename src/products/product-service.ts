@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-const products = [
+let products = [
   { id: 1, title: 'Milk', price: 3.5 },
   { id: 2, title: 'Fries', price: 5.5 }
 ];
@@ -23,4 +23,12 @@ export class ProductService {
     return newProduct;
   }
 
+  remove(id: number) {
+    products = products.filter(x => x.id !== id);
+  }
+
+  edit(id: number, price: number) {
+    const product = products.find(x => x.id = id);
+    product.price = price;
+  }
 }
