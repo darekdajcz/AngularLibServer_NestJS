@@ -6,7 +6,7 @@ import {
   HttpCode,
   Param,
   Patch,
-  Post,
+  Post, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import { ProductService } from './product-service';
 import { CreateProductDto } from './dtos/create-product.dto';
@@ -28,6 +28,8 @@ export class ProductsController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe(
+  ))
   addProduct(@Body() requestBody: CreateProductDto) {
     return this.productService.add(requestBody.title, requestBody.price);
   }
