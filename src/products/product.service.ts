@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ProductDto } from './dtos/product.dto';
 
 let products = [
   { id: 1, title: 'Milk', price: 3.5 },
@@ -11,7 +12,7 @@ export class ProductService {
     return products;
   }
 
-  async getById(id: number): Promise<any> {
+  async getById(id: number): Promise<ProductDto> {
     const product = products.find((product) => product.id === id);
     if (product) {
       return Promise.resolve(product);

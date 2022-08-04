@@ -9,10 +9,12 @@ import {
   Patch,
   Post, UseFilters, UsePipes, ValidationPipe
 } from '@nestjs/common';
-import { ProductService } from './product-service';
+import { ProductService } from './product.service';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { EditProductDto } from './dtos/edit-product.dto';
 import { HttpExceptionFilter } from './filter/http-exception-filter';
+import { ProductDto } from './dtos/product.dto';
+import { JoiValidationPipe } from './pipe/joi-validation.pipe';
 
 // localhost:3000/products
 @Controller('products')
@@ -27,7 +29,7 @@ export class ProductsController {
 
   @Get('/:id')
   @UseFilters(new HttpExceptionFilter())
-  async getProduct(@Param('id') id: string): Promise<any> {
+  async getProduct(@Param('id') id: string): Promise<ProductDto> {
     try {
       return this.productService.getById(parseInt(id));
     } catch (err) {
@@ -41,6 +43,7 @@ export class ProductsController {
     return this.productService.add(requestBody.title, requestBody.price);
   }
 
+  @UsePipes(new JoiValidationPipe({}))
   @Delete('/:id')
   @HttpCode(204)
   removeProduct(@Param('id') id: string) {
