@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 let products = [
   { id: 1, title: 'Milk', price: 3.5 },
-  { id: 2, title: 'Fries', price: 5.5 },
+  { id: 2, title: 'Fries', price: 5.5 }
 ];
 
 @Injectable()
@@ -11,8 +11,12 @@ export class ProductService {
     return products;
   }
 
-  getById(id: number) {
-    return products.find((product) => product.id === id);
+  async getById(id: number): Promise<any> {
+    const product = products.find((product) => product.id === id);
+    if (product) {
+      return Promise.resolve(product);
+    }
+    throw new NotFoundException('XX');
   }
 
   add(title: string, price: number) {
