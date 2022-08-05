@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProductDto } from './dtos/product.dto';
+import { ProductDto } from './dto/product.dto';
 
 let products = [
   { id: 1, title: 'Milk', price: 3.5 },

@@ -10,10 +10,10 @@ import {
   Post, UseFilters, UseGuards, UseInterceptors, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './dtos/create-product.dto';
-import { EditProductDto } from './dtos/edit-product.dto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { EditProductDto } from './dto/edit-product.dto';
 import { HttpExceptionFilter } from './filter/http-exception-filter';
-import { ProductDto } from './dtos/product.dto';
+import { ProductDto } from './dto/product.dto';
 import { JoiValidationPipe } from './pipe/joi-validation.pipe';
 import { AuthGuard } from './guard/auth.guard';
 import { LoggingInterceptor } from './interceptor/logging.interceptor';
