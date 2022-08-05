@@ -9,7 +9,7 @@ export class TaskService {
   constructor(private readonly taskStorageService: TaskStorageService) {
   }
 
-  public async addTask(task: Task): Promise<Partial<Task>> {
+   async addTask(task: Task): Promise<Task> {
     task.id = uuid();
     task.completed = false;
     task.description = 'xXxXXxXx';
@@ -18,13 +18,15 @@ export class TaskService {
     return this.taskStorageService.addTask(task);
   }
 
-  public async getTask(taskId: string): Promise<Task> {
+   async getTask(taskId: string): Promise<Task> {
     return this.taskStorageService.getTask(taskId);
-
   }
 
-  public async getAllTask(): Promise<Task[]> {
+   async getAllTask(): Promise<Task[]> {
     return this.taskStorageService.getAllTask();
+  }
 
+  async deleteTask(taskId: string) {
+    return this.taskStorageService.deleteTask(taskId);
   }
 }
