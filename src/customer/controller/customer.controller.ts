@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Put, Req, Res } from '@nestjs/common';
 import { CustomerService } from '../services/customer.service';
 
 // localhost:3000/customers
@@ -8,16 +8,20 @@ export class CustomerController {
   }
 
   @Get()
-  getAllCustomers(@Res() res) {
-    const data = this.customerService.listOfCustumers();
+  async getAllCustomers(@Res() res) {
+    const data = this.customerService.listOfCustomers();
     res.status(HttpStatus.OK).json(data);
   }
 
   @Get('/:customer-id')
-  getAllCustomerById(@Res() res, @Param('id') customerId: string) {
+  async getAllCustomerById(@Res() res, @Param('id') customerId: string) {
     const data = this.customerService.getCustomer(customerId);
     res.status(HttpStatus.OK).json(data);
-
   }
 
+  @Put('/:customer-id')
+  async updateCustomerById(@Res() res, @Param('customer-id') customerId: string, @Req() req: Request) {
+    const data = this.customerService.updateCustomer(customerId, req.body);
+    res.status(HttpStatus.OK).json(data);
+  }
 }
