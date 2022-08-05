@@ -7,7 +7,7 @@ import {
   HttpCode,
   Param,
   Patch,
-  Post, UseFilters, UseGuards, UsePipes, ValidationPipe
+  Post, UseFilters, UseGuards, UseInterceptors, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dtos/create-product.dto';
@@ -16,6 +16,7 @@ import { HttpExceptionFilter } from './filter/http-exception-filter';
 import { ProductDto } from './dtos/product.dto';
 import { JoiValidationPipe } from './pipe/joi-validation.pipe';
 import { AuthGuard } from './guard/auth.guard';
+import { LoggingInterceptor } from './interceptor/logging.interceptor';
 
 // localhost:3000/products
 @UseGuards(new AuthGuard())
@@ -32,6 +33,7 @@ export class ProductsController {
   @Get('/:id')
   @UseFilters(new HttpExceptionFilter())
   @UseGuards(new AuthGuard())
+  @UseInterceptors(new LoggingInterceptor())
   async getProduct(@Param('id') id: string): Promise<ProductDto> {
     try {
       return this.productService.getById(parseInt(id));
