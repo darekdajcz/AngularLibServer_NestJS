@@ -1,8 +1,8 @@
-export interface TaskDto {
-  id: string;
+import { IsDefined, IsNotEmpty } from 'class-validator';
+
+export class TaskDto {
+
+  @IsDefined()
+  @IsNotEmpty()
   name: string;
-  completed: boolean;
-  description: string;
-  ownder: string;
-  duration: number;
 }
