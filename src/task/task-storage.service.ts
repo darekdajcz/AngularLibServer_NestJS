@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './interface/task.model';
 
 @Injectable()
@@ -12,7 +12,10 @@ export class TaskStorageService {
 
   async getTask(taskId: string): Promise<Task> {
     const task = this.tasks.find((task) => task.id === taskId);
-    return Promise.resolve(task);
+    if (task) {
+      return Promise.resolve(task);
+    }
+    throw new NotFoundException('task not founded');
   }
 
   async getAllTask(): Promise<Task[]> {
@@ -20,7 +23,19 @@ export class TaskStorageService {
   }
 
   deleteTask(taskId: string): Promise<Task[]> {
-    this.tasks = this.tasks.filter(task => task.id !== taskId)
+    const task = this.tasks.find((task) => task.id === taskId);
+    if (!task) {
+      throw new NotFoundException('task not founded');
+    }
+    this.tasks = this.tasks.filter((task) => task.id === taskId);
     return Promise.resolve(this.tasks);
+  }
+
+  filterAllTasks(filter: boolean): Promise<Task[]> {
+    if (!filter) {
+      return Promise.resolve(this.tasks);
+    }
+
+    return Promise.resolve(this.tasks.sort((a: any, b: any) => a.name - b.name));
   }
 }

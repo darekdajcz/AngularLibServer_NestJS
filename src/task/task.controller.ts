@@ -1,7 +1,18 @@
 // localhost:3000/products
-import { Body, Controller, Delete, Get, Param, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get, HttpCode, HttpException, HttpStatus,
+  InternalServerErrorException,
+  Param, ParseBoolPipe,
+  Post, Query,
+  Res,
+  UsePipes,
+  ValidationPipe
+} from '@nestjs/common';
 import { TaskService } from './task.service';
-import { TaskDto, TaskParamDto } from './dto/task.dto';
+import { QueryParamDto, TaskDto, TaskParamDto } from './dto/task.dto';
 import { Response } from 'express';
 
 @Controller('task')
@@ -16,15 +27,20 @@ export class TasksController {
   }
 
   @Get(':id')
-  async getTask(@Param() reqParam: TaskParamDto, @Res() res: Response) {
-    const data = await this.taskService.getTask(reqParam.id);
-    return res.status(200).send(data);
+  @UsePipes(new ValidationPipe())
+  async getTask(@Param() reqParam: TaskParamDto) {
+    return await this.taskService.getTask(reqParam.id);
+  }
+
+  @Get('/filter/data')
+  @UsePipes(new ValidationPipe({ whitelist: false, transform: true }))
+  async filterTaskById(@Query() reqParam: QueryParamDto, @Res() res: Response) {
+    return await this.taskService.filterAllTasks(reqParam.filter);
   }
 
   @Delete(':id')
-  async deleteTaskById(@Param() reqParam: TaskParamDto, @Res() res: Response) {
-    const data = await this.taskService.deleteTask(reqParam.id);
-    return res.status(200).send(data);
+  async deleteTaskById(@Param() reqParam: TaskParamDto) {
+    return await this.taskService.deleteTask(reqParam.id);
   }
 
   @Post()

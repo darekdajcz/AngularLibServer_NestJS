@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ParseBoolPipe } from '@nestjs/common';
 import { TaskStorageService } from './task-storage.service';
 import { Task } from './interface/task.model';
 import { uuid } from 'uuidv4';
@@ -24,6 +24,10 @@ export class TaskService {
 
    async getAllTask(): Promise<Task[]> {
     return this.taskStorageService.getAllTask();
+  }
+
+  async filterAllTasks(filter: boolean): Promise<Task[]> {
+    return this.taskStorageService.filterAllTasks(filter);
   }
 
   async deleteTask(taskId: string) {
