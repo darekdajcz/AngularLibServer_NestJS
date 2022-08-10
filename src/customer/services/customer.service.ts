@@ -12,12 +12,17 @@ export class CustomerService {
   constructor(@InjectModel('Customer') private readonly customerModel: Model<Customer>) {
   }
 
+  xx() {
+    return 'xxx'
+  }
+
   async listOfCustomers(@Res() res: Response): Promise<Customer[]> {
     return await this.customerModel.find();
   }
 
   async createCustomer(customer: CreateCustomerDTO): Promise<Customer> {
     const newCustomer = await new this.customerModel(customer);
+    console.log(newCustomer)
     return newCustomer.save();
   }
 

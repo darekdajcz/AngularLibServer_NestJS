@@ -2,11 +2,17 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req
 import { CustomerService } from '../services/customer.service';
 import { Response } from 'express';
 import { CreateCustomerDTO } from '../dto/customer.dto';
+import { AppService } from '../../app.service';
 
 // localhost:3000/customers
-@Controller('customers')
+@Controller('/customers')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) {
+  constructor(private readonly customerService: CustomerService, private readonly appService: AppService) {
+  }
+
+  @Get('/home')
+  getHello(): string {
+    return this.appService.getHello();
   }
 
   @Get('/')
@@ -26,6 +32,9 @@ export class CustomerController {
 
   @Post()
   async createCustomers(@Res() res: Response, @Body() customer: CreateCustomerDTO) {
+    console.log(customer)
+    console.log(res)
+
     try {
       const data = await this.customerService.createCustomer(customer);
       res.status(HttpStatus.OK).json(data);
