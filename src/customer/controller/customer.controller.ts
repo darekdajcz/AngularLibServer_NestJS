@@ -1,5 +1,7 @@
-import { Controller, Get, HttpStatus, Param, Put, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
 import { CustomerService } from '../services/customer.service';
+import { Response } from 'express';
+import { CreateCustomerDTO } from '../dto/customer.dto';
 
 // localhost:3000/customers
 @Controller('customers')
@@ -7,21 +9,40 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) {
   }
 
-  @Get()
+  @Get('/')
   async getAllCustomers(@Res() res) {
-    const data = this.customerService.listOfCustomers();
-    res.status(HttpStatus.OK).json(data);
+    try {
+      const data = await this.customerService.listOfCustomers(res);
+      res.status(HttpStatus.OK).json(data);
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    }
   }
 
   @Get('/:customer-id')
   async getAllCustomerById(@Res() res, @Param('id') customerId: string) {
-    const data = this.customerService.getCustomer(customerId);
+    return await this.customerService.getCustomer(customerId);
+  }
+
+  @Post()
+  async createCustomers(@Res() res: Response, @Body() customer: CreateCustomerDTO) {
+    try {
+      const data = await this.customerService.createCustomer(customer);
+      res.status(HttpStatus.OK).json(data);
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    }
+  }
+
+  @Put('')
+  async updateCustomerById(@Res() res: Response, @Body() customerParam: Partial<CreateCustomerDTO>, @Query('customerId') customerId: string) {
+    const data = this.customerService.updateCustomer(customerId, customerParam);
     res.status(HttpStatus.OK).json(data);
   }
 
-  @Put('/:customer-id')
-  async updateCustomerById(@Res() res, @Param('customer-id') customerId: string, @Req() req: Request) {
-    const data = this.customerService.updateCustomer(customerId, req.body);
-    res.status(HttpStatus.OK).json(data);
+  @Delete('/')
+  async deleteCustomerById(@Query('customerId') customerId: string) {
+    return await this.customerService.removeCustomer(customerId);
   }
+
 }

@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from '../../database/entity/customer.entity';
 import { Model } from 'mongoose';
+import { Response } from 'express';
+import { CreateCustomerDTO } from '../dto/customer.dto';
+
 
 @Injectable()
 export class CustomerService {
@@ -9,28 +12,37 @@ export class CustomerService {
   constructor(@InjectModel('Customer') private readonly customerModel: Model<Customer>) {
   }
 
-  async listOfCustomers() {
-    // return await this.customerModel({});
+  async listOfCustomers(@Res() res: Response): Promise<Customer[]> {
+    return await this.customerModel.find();
   }
 
-  async createCustomer(customer): Promise<Customer> {
-    return await this.customerModel.create(customer);
+  async createCustomer(customer: CreateCustomerDTO): Promise<Customer> {
+    const newCustomer = await new this.customerModel(customer);
+    return newCustomer.save();
   }
 
-  async updateCustomer(id: string, body: ReadableStream<Uint8Array>): Promise<Customer[]> {
-    const customer = await this.customerModel.findByIdAndUpdate(id);
-    if (customer) {
-      // customer.propername
+  async updateCustomer(id: string, body: Partial<CreateCustomerDTO>): Promise<Customer> {
+    try {
+      return await this.customerModel.findByIdAndUpdate(id, body, { new: true });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
-    return customer.update();
   }
 
-  async removeCustomer(customerId: number): Promise<Customer[]> {
-    return await this.customerModel.findByIdAndRemove(customerId);
+  async removeCustomer(customerId: string): Promise<Customer[]> {
+    try {
+      return await this.customerModel.findByIdAndRemove(customerId);
+    } catch (error) {
+      throw new InternalServerErrorException("error");
+    }
   }
 
   async getCustomer(id: string): Promise<Customer> {
-    return await this.customerModel.findById(id);
+    const customer = await this.customerModel.findById(id);
+    if (!customer) {
+      throw new NotFoundException('cant find customer');
+    }
+    return customer;
   }
 
 }
