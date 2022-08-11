@@ -7,7 +7,6 @@ export class LoggingInterceptor implements NestInterceptor {
     console.log('Before...');
 
     const now = Date.now();
-    console.log();
     return next
       .handle()
       .pipe(

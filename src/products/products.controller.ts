@@ -44,7 +44,6 @@ export class ProductsController {
 
   @Post()
   addProduct(@Body() requestBody: CreateProductDto) {
-    console.log(requestBody.title)
     return this.productService.add(requestBody.title, requestBody.price);
   }
 
