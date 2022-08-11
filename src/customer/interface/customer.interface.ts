@@ -1,4 +1,5 @@
-export interface CustomerInterface extends Document{
+export interface CustomerInterface {
+  readonly _id: string,
   readonly firstName: string,
   readonly lastName: string,
   readonly email: string,

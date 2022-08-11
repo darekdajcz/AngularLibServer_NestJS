@@ -33,7 +33,6 @@ export class CustomerController {
   @Post('/')
   async createCustomers(@Res() res: Response, @Body() customer: CreateCustomerDTO) {
     console.log(customer)
-    console.log(res)
 
     try {
       const data = await this.customerService.createCustomer(customer);

@@ -1,14 +1,15 @@
 import { IsDefined, IsEmail, IsMongoId, IsNotEmpty } from 'class-validator';
 
 export class CreateCustomerDTO {
-  readonly first_name: string;
-  readonly last_name: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  @IsEmail()
+  @IsDefined()
   readonly email: string;
-
   readonly phone: string;
   readonly address: string;
   readonly description: string;
-  readonly created_at: Date;
+  readonly createdAt: Date;
 }
 
 export class CustomerParamDTO {

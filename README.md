@@ -49,7 +49,14 @@ for db.sqlite install sqlite viewer plugin
 ## Connecting with database
 ```bash
 #in terminal
-mysql -u darek-user -p
+npm install --save @nestjs/mongoose
+npm install --save mongoose
+
+* create database in 'https://cloud.mongodb.com/'
+download MongoDB Compass
+connect to cluster with data by using MongoDb Compass
+
+then do connection like in customer folder
 
 ```
 

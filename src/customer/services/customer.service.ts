@@ -1,32 +1,27 @@
 import { Injectable, InternalServerErrorException, NotFoundException, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Customer } from '../../database/entity/customer.entity';
 import { Model } from 'mongoose';
 import { Response } from 'express';
 import { CreateCustomerDTO } from '../dto/customer.dto';
+import { CustomerInterface } from '../interface/customer.interface';
 
 
 @Injectable()
 export class CustomerService {
 
-  constructor(@InjectModel('Customer') private readonly customerModel: Model<Customer>) {
+  constructor(@InjectModel('Customer') private readonly customerModel: Model<CustomerInterface>) {
   }
 
-  xx() {
-    return 'xxx'
-  }
-
-  async listOfCustomers(@Res() res: Response): Promise<Customer[]> {
+  async listOfCustomers(@Res() res: Response): Promise<CustomerInterface[]> {
     return await this.customerModel.find();
   }
 
-  async createCustomer(customer: CreateCustomerDTO): Promise<Customer> {
+  async createCustomer(customer: CreateCustomerDTO): Promise<CustomerInterface> {
     const newCustomer = await new this.customerModel(customer);
-    console.log(newCustomer)
     return newCustomer.save();
   }
 
-  async updateCustomer(id: string, body: Partial<CreateCustomerDTO>): Promise<Customer> {
+  async updateCustomer(id: string, body: Partial<CreateCustomerDTO>): Promise<CustomerInterface> {
     try {
       return await this.customerModel.findByIdAndUpdate(id, body, { new: true });
     } catch (error) {
@@ -34,7 +29,7 @@ export class CustomerService {
     }
   }
 
-  async removeCustomer(customerId: string): Promise<Customer[]> {
+  async removeCustomer(customerId: string): Promise<CustomerInterface[]> {
     try {
       return await this.customerModel.findByIdAndRemove(customerId);
     } catch (error) {
@@ -42,7 +37,7 @@ export class CustomerService {
     }
   }
 
-  async getCustomer(id: string): Promise<Customer> {
+  async getCustomer(id: string): Promise<CustomerInterface> {
     const customer = await this.customerModel.findById(id);
     if (!customer) {
       throw new NotFoundException('cant find customer');

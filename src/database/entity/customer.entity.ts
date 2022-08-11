@@ -7,10 +7,16 @@ export class Customer {
 
   @Column()
   firstName: string;
-
   @Column()
   lastName: string;
-
-  @Column({ default: true })
-  isActive: boolean;
+  @Column()
+  email: string;
+  @Column()
+  phone: string;
+  @Column()
+  address: string;
+  @Column()
+  description: string;
+  @Column()
+  createdAt: Date;
 }
