@@ -17,6 +17,7 @@ export class CustomerController {
 
   @Get('/')
   async getAllCustomers(@Res() res) {
+    console.log('Response...')
     try {
       const data = await this.customerService.listOfCustomers(res);
       res.status(HttpStatus.OK).json(data);

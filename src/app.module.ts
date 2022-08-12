@@ -11,16 +11,16 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ProductsModule, CustomerModule, DatabaseModule,
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      host: 'localhost',
-      port: 27017,
-      username: 'root',
-      password: 'root',
-      database: 'test',
-      entities: [],
-      synchronize: false,
-    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'mongodb',
+    //   host: 'localhost',
+    //   port: 27017,
+    //   username: 'root',
+    //   password: 'root',
+    //   database: 'test',
+    //   entities: [],
+    //   synchronize: false,
+    // }),
   ],
   controllers: [AppController],
   providers: [AppService]
