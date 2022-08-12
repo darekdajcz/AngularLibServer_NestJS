@@ -1,7 +1,7 @@
 FROM node:carbon
 
 # create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # boudle app source
 COPY . .

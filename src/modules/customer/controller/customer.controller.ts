@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { CustomerService } from '../services/customer.service';
 import { Response } from 'express';
 import { CreateCustomerDTO } from '../dto/customer.dto';
-import { AppService } from '../../app.service';
+import { AppService } from '../../../app.service';
 
 // localhost:3000/customers
 @Controller('/customers')

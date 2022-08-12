@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CustomerSchema } from './schema/customer.schema';
 import { CustomerController } from './controller/customer.controller';
 import { CustomerService } from './services/customer.service';
-import { AppService } from '../app.service';
+import { AppService } from '../../app.service';
 
 @Module({
   imports: [

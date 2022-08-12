@@ -1,23 +1,52 @@
-version: "3"
+version: '3.5'
 services:
-  node:
-    build: .
+  db:
+    image: mysql:5.7
     ports:
       - "3000:3000"
-    volumes:
-      - ./:/usr/src/app
-    depends_on:
-      - mysql
-  mysql:
-    image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: uzi2115
-      MYSQL_DATABASE: angular_db
-      MYSQL_USER: darek-user
-      MYSQL_PASSWORD: uzi2115
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: darekbiszkopt
+      MYSQL_PASSWORD: Uzi2115
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+    networks:
+      - core_service_network
+  mongo:
+    image: mongo
+    container_name: global-mongo-service
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/configdb
+      - mongo_data:/data/db
     ports:
-      - "3306:3306"
+      - "27017:27017"
+    networks:
+      - core_service_network
+  apis:
+    command: npm run debug
+    build: ./api-app
+    ports:
+      - "3000:3000"
+      - "5858:5858"
+    volumes:
+      - ./api-app/docker/node/node-docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
+      - ./api-app:/app
+    env_file:
+      ./api-app/.env
+    depends_on:
+      - mongo
+    networks:
+      - core_service_network
+networks:
+  core_service_network:
+    driver: bridge
+    name: core_service_network
 volumes:
-  mysql-data: { }
+  mysql_data:
+    name: mysql_data
+  mongo_data:
+    name: global_mongo
+  apis_modules:
+    name: apis_modules
