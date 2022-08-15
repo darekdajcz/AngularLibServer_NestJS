@@ -6,10 +6,14 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { DatabaseModule } from './database/database.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { MovieModule } from './modules/movie/movie.module';
 
 @Module({
   imports: [
-    ProductsModule, CustomerModule, DatabaseModule,
+    ProductsModule,
+    CustomerModule,
+    DatabaseModule,
+    MovieModule,
     ConfigModule.forRoot({ isGlobal: true }),
     // TypeOrmModule.forRoot({
     //   type: 'mongodb',
