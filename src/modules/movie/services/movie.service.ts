@@ -29,7 +29,7 @@ export class MovieService {
     }
   }
 
-  async removeMovie(movieId: string): Promise<MovieInterface[]> {
+  async removeMovie(movieId: string): Promise<MovieInterface> {
     try {
       return await this.movieModel.findByIdAndRemove(movieId);
     } catch (error) {
