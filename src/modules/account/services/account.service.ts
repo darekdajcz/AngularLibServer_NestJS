@@ -2,7 +2,10 @@ import { Injectable, InternalServerErrorException, NotFoundException, Res } from
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountInterface } from '../interface/account.interface';
-import { RegisterAccountModel } from '../dto/account.dto';
+import { RegisterAccountModel } from '../dto/register-account.dto';
+import { LoginAccountModel } from '../dto/login-account.dto';
+import { Response } from 'express';
+import { MovieInterface } from '../../movie/interface/movie.interface';
 
 
 @Injectable()
@@ -10,6 +13,11 @@ export class AccountService {
 
   constructor(@InjectModel('Account') private readonly accountModel: Model<AccountInterface>) {
   }
+
+  async listOfAccounts(@Res() res: Response): Promise<AccountInterface[]> {
+    return await this.accountModel.find();
+  }
+
 
   async registerAccount(accountModel: RegisterAccountModel): Promise<AccountInterface> {
     const newAccount = await new this.accountModel(accountModel);
@@ -28,7 +36,7 @@ export class AccountService {
     try {
       return await this.accountModel.findByIdAndRemove(accountId);
     } catch (error) {
-      throw new InternalServerErrorException("error");
+      throw new InternalServerErrorException('error');
     }
   }
 
@@ -38,6 +46,21 @@ export class AccountService {
       throw new NotFoundException('cant find account');
     }
     return account;
+  }
+
+  async loginAccountInfo(loginAccount: LoginAccountModel): Promise<AccountInterface> {
+    let loginAcc;
+    await this.accountModel.collection.find().forEach((res) => {
+      if(res.email === loginAccount.email) {
+        loginAcc = res;
+      }
+    });
+
+    if (!loginAcc) {
+      throw new NotFoundException('cant find account');
+    }
+
+    return loginAcc;
   }
 
 }

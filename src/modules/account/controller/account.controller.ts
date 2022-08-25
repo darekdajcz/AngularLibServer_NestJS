@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AccountService } from '../services/account.service';
-import { RegisterAccountModel } from '../dto/account.dto';
+import { RegisterAccountModel } from '../dto/register-account.dto';
+import { LoginAccountModel } from '../dto/login-account.dto';
 
 // localhost:3000/account
 @Controller('/account')
@@ -9,9 +10,25 @@ export class AccountController {
   constructor(private readonly accountService: AccountService) {
   }
 
+  @Get('/')
+  async getAllAccount(@Res() res) {
+    console.log('Response...')
+    try {
+      const data = await this.accountService.listOfAccounts(res);
+      res.status(HttpStatus.OK).json(data);
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    }
+  }
+
   @Get('/:account-id')
   async getAccountById(@Res() res, @Param('account-id') accountId: string) {
     return await this.accountService.getAccountInfo(accountId);
+  }
+
+  @Post('/login')
+  async login(@Res() res, @Body() loginAccount: LoginAccountModel) {
+    return await this.accountService.loginAccountInfo(loginAccount);
   }
 
   @Post('/')
