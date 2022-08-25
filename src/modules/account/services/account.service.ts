@@ -11,7 +11,7 @@ export class AccountService {
   constructor(@InjectModel('Account') private readonly accountModel: Model<AccountInterface>) {
   }
 
-  async createAccount(accountModel: RegisterAccountModel): Promise<AccountInterface> {
+  async registerAccount(accountModel: RegisterAccountModel): Promise<AccountInterface> {
     const newAccount = await new this.accountModel(accountModel);
     return newAccount.save();
   }

@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { MovieService } from '../services/movie.service';
 import { CreateMovieModel } from '../dto/movie.dto';
 
-// localhost:3000/customers
+// localhost:3000/movies
 @Controller('/movies')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {
