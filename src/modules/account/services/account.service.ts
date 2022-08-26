@@ -21,6 +21,7 @@ export class AccountService {
 
   async registerAccount(accountModel: RegisterAccountModel): Promise<AccountInterface> {
     const newAccount = await new this.accountModel(accountModel);
+    // this.accountModel
     return newAccount.save();
   }
 
