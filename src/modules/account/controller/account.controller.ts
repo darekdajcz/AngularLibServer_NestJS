@@ -12,7 +12,6 @@ export class AccountController {
 
   @Get('/')
   async getAllAccount(@Res() res) {
-    console.log('Response...')
     try {
       const data = await this.accountService.listOfAccounts(res);
       res.status(HttpStatus.OK).json(data);
@@ -28,7 +27,12 @@ export class AccountController {
 
   @Post('/login')
   async login(@Res() res, @Body() loginAccount: LoginAccountModel) {
-    return await this.accountService.loginAccountInfo(loginAccount);
+    try {
+      const data = await this.accountService.loginAccountInfo(loginAccount);
+      res.status(HttpStatus.OK).json(data);
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    }
   }
 
   @Post('/')
@@ -37,7 +41,7 @@ export class AccountController {
       const data = await this.accountService.registerAccount(account);
       res.status(HttpStatus.OK).json(data);
     } catch (err) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      res.status(err.response.statusCode).send(err.response.message);
     }
   }
 

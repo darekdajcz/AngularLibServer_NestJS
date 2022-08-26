@@ -43,24 +43,36 @@ export class AccountService {
   async getAccountInfo(accountId: string): Promise<AccountInterface> {
     const account = await this.accountModel.findById(accountId);
     if (!account) {
-      throw new NotFoundException('cant find account');
+      throw new NotFoundException('Can\'t find account');
     }
     return account;
   }
 
   async loginAccountInfo(loginAccount: LoginAccountModel): Promise<AccountInterface> {
-    let loginAcc;
+    let emailFound;
+    let passwordFound;
+    let loginAccountFound;
     await this.accountModel.collection.find().forEach((res) => {
-      if(res.email === loginAccount.email) {
-        loginAcc = res;
+      if (res.email === loginAccount.email) {
+        console.log(res);
+        emailFound = true;
       }
+
+      if (res.password === loginAccount.password) {
+        console.log(res);
+        passwordFound = true;
+      }
+      passwordFound && emailFound ? loginAccountFound = res : null;
     });
 
-    if (!loginAcc) {
-      throw new NotFoundException('cant find account');
+    if (!emailFound) {
+      throw new NotFoundException('Account with this email doesn\'t exists');
+    }
+    if (emailFound && !passwordFound) {
+      throw new NotFoundException('Wrong password');
     }
 
-    return loginAcc;
+    return loginAccountFound;
   }
 
 }
