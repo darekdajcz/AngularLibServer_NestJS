@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AccountService } from '../services/account.service';
 import { RegisterAccountModel } from '../dto/register-account.dto';
 import { LoginAccountModel } from '../dto/login-account.dto';
+import { LocalAuthGuard } from '../../auth/local-auth.guard';
 
 // localhost:3000/account
 @Controller('/account')
@@ -25,6 +26,7 @@ export class AccountController {
     return await this.accountService.getAccountInfo(accountId);
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Res() res, @Body() loginAccount: LoginAccountModel) {
     try {

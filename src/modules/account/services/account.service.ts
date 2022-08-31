@@ -5,6 +5,7 @@ import { AccountInterface } from '../interface/account.interface';
 import { RegisterAccountModel } from '../dto/register-account.dto';
 import { LoginAccountModel } from '../dto/login-account.dto';
 import { Response } from 'express';
+import bcrypt from 'bcrypt';
 import { MovieInterface } from '../../movie/interface/movie.interface';
 
 
@@ -51,7 +52,6 @@ export class AccountService {
 
   async loginAccountInfo(loginAccount: LoginAccountModel): Promise<AccountInterface> {
     let emailFound;
-    let passwordFound;
     let loginAccountFound;
     await this.accountModel.collection.find().forEach((res) => {
       if (res.email === loginAccount.email) {
@@ -59,19 +59,15 @@ export class AccountService {
         emailFound = true;
       }
 
-      if (res.password === loginAccount.password) {
-        console.log(res);
-        passwordFound = true;
-      }
-      passwordFound && emailFound ? loginAccountFound = res : null;
+     emailFound ? loginAccountFound = res : null;
     });
 
     if (!emailFound) {
       throw new NotFoundException('Account with this email doesn\'t exists');
     }
-    if (emailFound && !passwordFound) {
-      throw new NotFoundException('Wrong password');
-    }
+    // if (emailFound && !passwordFound) {
+    //   throw new NotFoundException('Wrong password');
+    // }
 
     return loginAccountFound;
   }

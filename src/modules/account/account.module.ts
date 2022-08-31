@@ -10,7 +10,8 @@ import { AccountSchema } from './schema/account.schema';
     MongooseModule.forFeature([{ name: 'Account', schema: AccountSchema }])
   ],
   controllers: [AccountController],
-  providers: [AccountService, AppService]
+  providers: [AccountService, AppService],
+  exports: [AccountService]
 })
 export class AccountModule {
 }

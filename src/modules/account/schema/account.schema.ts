@@ -7,7 +7,7 @@ export const AccountSchema = new mongoose.Schema({
   email: { type: String, required: true },
 });
 
-
-AccountSchema.plugin(passportLocalMongoose, { usernameField: 'email'})
-
-export default mongoose.model('Account', AccountSchema)
+//
+// AccountSchema.plugin(passportLocalMongoose, { usernameField: 'email'})
+//
+// export default mongoose.model('Account', AccountSchema)

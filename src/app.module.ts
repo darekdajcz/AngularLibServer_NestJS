@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { MovieModule } from './modules/movie/movie.module';
 import { AccountModule } from './modules/account/account.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AccountModule } from './modules/account/account.module';
     DatabaseModule,
     MovieModule,
     AccountModule,
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     // TypeOrmModule.forRoot({
     //   type: 'mongodb',
